@@ -3,89 +3,166 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Практика: закріплюємо цикл for</title>
+<title>Цикл for: від практики до розуміння</title>
 <style>
-:root{--bg:#f5f7fb;--card:#fff;--tx:#1d2433;--mut:#5b6678;--ac:#4f46e5;--acs:#eef0ff;--ok:#15803d;--bad:#b45309;--bd:#dde2ec;--code:#111827;--codetx:#e5e7eb;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1420;--card:#182033;--tx:#e8ecf5;--mut:#a3aec4;--ac:#8b93ff;--acs:#252d4d;--ok:#4ade80;--bad:#fbbf24;--bd:#2c3752;--code:#0a0e18}}
+:root{--bg:#f5f7fb;--card:#fff;--tx:#1d2433;--mut:#5b6678;--ac:#4f46e5;--acs:#eef0ff;--ok:#15803d;--oks:#e6f6ec;--bad:#b45309;--bads:#fdf1e0;--bd:#dde2ec;--code:#111827;--ct:#e5e7eb;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1420;--card:#182033;--tx:#e8ecf5;--mut:#a3aec4;--ac:#8b93ff;--acs:#252d4d;--ok:#4ade80;--oks:#14301f;--bad:#fbbf24;--bads:#33290f;--bd:#2c3752;--code:#0a0e18}}
 *{box-sizing:border-box}
 html{color-scheme:light dark}
 body{margin:0;background:var(--bg);color:var(--tx);font:18px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
-.wrap{max-width:760px;margin:0 auto;padding:16px}
-h1{font-size:1.6rem;line-height:1.25;margin:8px 0 4px}
-h2{font-size:1.3rem;margin:26px 0 4px}
-.sub{color:var(--mut);margin:0 0 12px}
-.box{background:var(--acs);border-radius:14px;padding:12px 16px;margin:12px 0}
-.box ul{margin:4px 0 0;padding-left:20px}
-.prog{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:8px 0}
-.bar{height:12px;background:var(--bd);border-radius:99px;overflow:hidden}
-.bar i{display:block;height:100%;width:0;background:var(--ac);transition:width .3s}
-.pt{font-size:.95rem;font-weight:600;margin-bottom:4px}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px;margin:12px 0}
-.card.done{border-color:var(--ok)}
-.card h3{margin:0 0 6px;font-size:1.12rem}
-.lbl{font-size:.9rem;color:var(--mut);font-weight:600;margin:10px 0 4px}
-pre{background:var(--code);color:var(--codetx);border-radius:12px;padding:12px;margin:6px 0;overflow-x:auto;font:15px/1.5 ui-monospace,Menlo,Consolas,monospace}
-details{margin:8px 0}
-summary{cursor:pointer;font-weight:600;color:var(--ac);padding:6px 0}
-label.ck{display:flex;gap:10px;align-items:center;margin-top:10px;font-weight:600;cursor:pointer}
-label.ck input{width:24px;height:24px;accent-color:var(--ac)}
-.sol{border-left:4px solid var(--ok);padding-left:10px;margin-top:10px}
-.lock{text-align:center}
-.lock input{width:100%;max-width:240px;text-align:center;letter-spacing:.2em;border:2px solid var(--bd);border-radius:12px;padding:10px;background:var(--bg);color:var(--tx);font-size:16px;margin:8px 0}
-button.pr{background:var(--ac);color:#fff;border:0;border-radius:12px;padding:12px 20px;font:600 1rem inherit;font-family:inherit;cursor:pointer}
-.err{color:var(--bad);font-weight:600;min-height:1.4em}
+.wrap{max-width:780px;margin:0 auto;padding:16px}
+h1{font-size:1.55rem;line-height:1.25;margin:6px 0}
+h2{font-size:1.35rem;margin:0 0 8px}
+.top{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;padding:6px 0 8px}
+.steps{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.steps button{flex:0 0 auto;width:42px;height:42px;border-radius:50%;border:2px solid var(--bd);background:var(--card);color:var(--tx);font:700 1rem inherit;font-family:inherit;cursor:pointer}
+.steps button.on{background:var(--ac);border-color:var(--ac);color:#fff}
+.steps button.dn{border-color:var(--ok)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px;margin:10px 0}
+.tag{display:inline-block;background:var(--acs);color:var(--ac);border-radius:99px;padding:2px 12px;font-size:.85rem;font-weight:700;margin-bottom:6px}
+pre{background:var(--code);color:var(--ct);border-radius:12px;padding:12px;margin:8px 0;overflow-x:auto;font:15px/1.6 ui-monospace,Menlo,Consolas,monospace}
+pre .l{display:block;padding:0 6px;border-radius:4px}
+pre .l.hl{background:#4f46e5;color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.chip{border:2px dashed var(--ac);background:var(--acs);color:var(--ac);border-radius:10px;padding:8px 12px;font:600 15px ui-monospace,Menlo,Consolas,monospace;cursor:pointer}
+.chip.on{border-style:solid;background:var(--ac);color:#fff}
+.info{background:var(--acs);border-radius:12px;padding:10px 14px;margin:8px 0;min-height:3.2em}
+.st{display:flex;gap:10px;margin:8px 0}
+.st div{flex:1;text-align:center;background:var(--acs);border-radius:12px;padding:8px;font-weight:700}
+.st b{display:block;font-size:1.6rem;color:var(--ac)}
+input.t,textarea{width:100%;border:2px solid var(--bd);border-radius:12px;padding:10px 12px;background:var(--bg);color:var(--tx);font:inherit;font-size:16px}
+.row{display:flex;gap:8px;margin:8px 0}
+.row input{flex:1}
+button.b{background:var(--ac);color:#fff;border:0;border-radius:12px;padding:11px 18px;font:600 1rem inherit;font-family:inherit;cursor:pointer}
+button.b.g{background:var(--acs);color:var(--ac)}
+button.b:disabled{opacity:.4;cursor:default}
+.opt{display:block;width:100%;text-align:left;margin:6px 0;border:2px solid var(--bd);background:var(--card);color:var(--tx);border-radius:12px;padding:10px 12px;font:inherit;font-size:1rem;cursor:pointer}
+.opt.ok{border-color:var(--ok);background:var(--oks)}
+.opt.no{border-color:var(--bad);background:var(--bads)}
+.fb{margin-top:6px;font-weight:600;min-height:1.3em}
+.fb.ok{color:var(--ok)}.fb.no{color:var(--bad)}
+.q{border-top:1px solid var(--bd);padding-top:12px;margin-top:12px}
+.nav{display:flex;justify-content:space-between;gap:10px;margin:12px 0 24px}
+.big{font-size:1.1rem}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:520px){.cmp{grid-template-columns:1fr}}
+.hide{display:none}
 </style>
 </head>
 <body>
 <div class="wrap">
-<h1>Практика: закріплюємо цикл <code>for</code></h1>
-<p class="sub">15 завдань від простих до складніших</p>
-<div class="box"><b>Як працювати</b><ul>
-<li>Код пиши в файлі <b>script.js</b> у своєму робочому просторі</li>
-<li>Відкрий <b>index.html</b> у браузері та консоль (F12 → Console)</li>
-<li>Використовуй тільки те, що вивчили: <code>for</code>, <code>if</code>, тернарний оператор, математичні й логічні оператори, шаблонний рядок</li>
-<li>Порівняй результат із очікуваним і познач завдання виконаним</li></ul></div>
-<div class="prog"><div class="pt" id="pt">Виконано: 0 з 15</div><div class="bar"><i id="pb"></i></div></div>
+<h1>🔁 Цикл <code>for</code>: від практики до розуміння</h1>
+<div class="top"><div class="steps" id="steps"></div></div>
 <main id="main"></main>
-<section class="card lock" id="teacher"><h3>🔒 Відповіді для вчителя</h3>
-<p class="sub">Введи код, щоб побачити приклади розв’язків.</p>
-<input type="text" id="tk" inputmode="numeric" placeholder="Код" autocomplete="off"><div class="err" id="te"></div>
-<button class="pr" id="tb">Показати відповіді</button></section>
+<div class="nav"><button class="b g" id="prev">← Назад</button><button class="b" id="next">Далі →</button></div>
 </div>
 <script>
-const KEY='NTczMQ=='; // код вчителя: 5731 (btoa)
-const L=[
-{h:'Рівень 1. Сума та накопичувач',t:[
-{n:'Сума від 1 до 10',d:'Знайди суму всіх чисел від 1 до 10 і виведи її.',r:'55',p:'Створи змінну sum = 0 до циклу. У циклі додавай i: sum += i. Виводь результат після циклу.',s:'let sum = 0;\nfor (let i = 1; i <= 10; i++) {\n  sum += i;\n}\nconsole.log(sum);'},
-{n:'Сума від 1 до 100',d:'Змінити в попередньому завданні тільки межу циклу.',r:'5050',p:'Тепер умова i <= 100.',s:'let sum = 0;\nfor (let i = 1; i <= 100; i++) {\n  sum += i;\n}\nconsole.log(sum);'},
-{n:'Середнє значення',d:'Знайди середнє арифметичне чисел від 1 до 10.',r:'5.5',p:'Середнє = сума / кількість чисел. Ділення роби після циклу.',s:'let sum = 0;\nfor (let i = 1; i <= 10; i++) {\n  sum += i;\n}\nconsole.log(sum / 10);'},
-{n:'Сума парних',d:'Знайди суму парних чисел від 1 до 50.',r:'650',p:'Можна почати з 2 і йти з кроком 2 (i += 2) або перевіряти i % 2 === 0.',s:'let sum = 0;\nfor (let i = 2; i <= 50; i += 2) {\n  sum += i;\n}\nconsole.log(sum);'},
-{n:'Факторіал',d:'Знайди факторіал числа 5 (1 · 2 · 3 · 4 · 5).',r:'120',p:'Накопичувач для множення починається з 1, а не з 0: result *= i.',s:'let result = 1;\nfor (let i = 1; i <= 5; i++) {\n  result *= i;\n}\nconsole.log(result);'}]},
-{h:'Рівень 2. Умови всередині циклу',t:[
-{n:'Таблиця множення',d:'Виведи таблицю множення на 7 від 1 до 10 за допомогою шаблонного рядка.',r:'7 × 1 = 7\n7 × 2 = 14\n…\n7 × 10 = 70',p:'Шаблонний рядок у зворотних лапках: `7 × ${i} = ${7 * i}`.',s:'for (let i = 1; i <= 10; i++) {\n  console.log(`7 × ${i} = ${7 * i}`);\n}'},
-{n:'Скільки чисел кратних 3',d:'Порахуй, скільки чисел від 1 до 100 діляться на 3 без остачі.',r:'33',p:'Потрібен лічильник count = 0. Якщо i % 3 === 0, збільшуй count.',s:'let count = 0;\nfor (let i = 1; i <= 100; i++) {\n  if (i % 3 === 0) count++;\n}\nconsole.log(count);'},
-{n:'FizzBuzz',d:'Для чисел від 1 до 30: якщо число ділиться на 3 — виведи Fizz, на 5 — Buzz, на 3 і 5 разом — FizzBuzz, інакше саме число.',r:'1, 2, Fizz, 4, Buzz, Fizz, 7, … 15 → FizzBuzz',p:'Спочатку перевір ділення на 3 і 5 одночасно (i % 15 === 0), потім окремі випадки.',s:'for (let i = 1; i <= 30; i++) {\n  if (i % 15 === 0) console.log("FizzBuzz");\n  else if (i % 3 === 0) console.log("Fizz");\n  else if (i % 5 === 0) console.log("Buzz");\n  else console.log(i);\n}'},
-{n:'Парне чи непарне',d:'Для чисел від 1 до 10 виведи «1 — непарне», «2 — парне» і так далі. Використай тернарний оператор.',r:'1 — непарне\n2 — парне\n…',p:'умова ? якщо_так : якщо_ні. Обидва варіанти можна записати шаблонним рядком.',s:'for (let i = 1; i <= 10; i++) {\n  console.log(i % 2 === 0 ? `${i} — парне` : `${i} — непарне`);\n}'},
-{n:'Середнє парних',d:'Знайди середнє арифметичне парних чисел від 1 до 20.',r:'11',p:'Потрібні два накопичувачі: сума і кількість парних. Ділення після циклу.',s:'let sum = 0;\nlet count = 0;\nfor (let i = 1; i <= 20; i++) {\n  if (i % 2 === 0) {\n    sum += i;\n    count++;\n  }\n}\nconsole.log(sum / count);'}]},
-{h:'Рівень 3. Слова та візерунки',t:[
-{n:'Скільки літер «a»',d:'Порахуй, скільки разів літера a зустрічається у слові "JavaScript".',r:'2',p:'Перебери слово як у лабораторній: word[i]. Якщо word[i] === "a", збільшуй лічильник.',s:'let word = "JavaScript";\nlet count = 0;\nfor (let i = 0; i < word.length; i++) {\n  if (word[i] === "a") count++;\n}\nconsole.log(count);'},
-{n:'Слово навпаки',d:'Виведи слово "JavaScript" навпаки одним рядком.',r:'tpircSavaJ',p:'Іди від останньої букви до першої: i = word.length - 1 і i--. Додавай букви до рядка result.',s:'let word = "JavaScript";\nlet result = "";\nfor (let i = word.length - 1; i >= 0; i--) {\n  result += word[i];\n}\nconsole.log(result);'},
-{n:'Кратні 3 і 5 одночасно',d:'Виведи числа від 1 до 100, які діляться і на 3, і на 5 одночасно.',r:'15, 30, 45, 60, 75, 90 (кожне з нового рядка)',p:'Використай логічне «і»: &&.',s:'for (let i = 1; i <= 100; i++) {\n  if (i % 3 === 0 && i % 5 === 0) {\n    console.log(i);\n  }\n}'},
-{n:'Числа в один рядок',d:'Виведи числа від 1 до 10 в один рядок через пробіл (один console.log).',r:'1 2 3 4 5 6 7 8 9 10',p:'Накопичуй у рядку row: row += i + " ". Виводь після циклу.',s:'let row = "";\nfor (let i = 1; i <= 10; i++) {\n  row += i + " ";\n}\nconsole.log(row);'},
-{n:'Трикутник із зірочок',d:'Виведи трикутник із 5 рядків, де в кожному рядку на одну зірочку більше.',r:'*\n**\n***\n****\n*****',p:'Рядок row росте: на кожному кроці додай "*" і виведи row прямо в циклі.',s:'let row = "";\nfor (let i = 1; i <= 5; i++) {\n  row += "*";\n  console.log(row);\n}'}]}];
 const $=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
-let num=0,done=0;const sols=[];const total=15;
-function upd(){document.getElementById('pt').textContent='Виконано: '+done+' з '+total;document.getElementById('pb').style.width=(done/total*100)+'%'}
-const m=document.getElementById('main');
-L.forEach(g=>{m.append($('h2','',g.h));g.t.forEach(t=>{num++;
- const c=$('section','card');c.append($('h3','',num+'. '+t.n),$('div','',t.d),$('div','lbl','Очікуваний результат:'),$('pre','',t.r));
- const dt=$('details');dt.append($('summary','','💡 Підказка'),$('div','',t.p));c.append(dt);
- const sv=$('div','sol');sv.hidden=true;sv.append($('div','lbl','✅ Приклад розв’язку (для вчителя):'),$('pre','',t.s));c.append(sv);sols.push(sv);
- const l=$('label','ck');const i=$('input');i.type='checkbox';i.onchange=()=>{c.classList.toggle('done',i.checked);done+=i.checked?1:-1;upd()};
- l.append(i,document.createTextNode('Виконано'));c.append(l);m.append(c)})});
-const go=()=>{if(btoa(document.getElementById('tk').value.trim())===KEY){sols.forEach(s=>s.hidden=false);document.getElementById('teacher').hidden=true}else document.getElementById('te').textContent='Невірний код.'};
-document.getElementById('tb').onclick=go;document.getElementById('tk').onkeydown=e=>{if(e.key==='Enter')go()};
-upd();
+const pre=(code)=>{const p=$('pre');p.textContent=code;return p};
+const dg=s=>s.replace(/\D/g,'');
+const sc={pred:0,bug:0,done:{}};
+let cur=0;
+const N=7;
+const T=['Правило','Ти — комп’ютер','Передбач результат','Полювання на баги','Навіщо цикл','Міст далі','Квиток на вихід'];
+
+function s1(m){
+ m.append($('span','tag','Етап 1'),$('h2','','Збираємо правило зі спостережень'));
+ m.append($('p','','Згадай практику: що ти змінював у циклі, коли результат ставав іншим? Натискай на частини заголовка й відкривай їхні назви.'));
+ m.append($('pre','','for (let i = 0; i < 5; i++) {\n  console.log(i);\n}'));
+ const ch=[['let i = 0','Початок (ініціалізація): звідки починаємо рахувати. Змінив початок — змінився перший елемент.'],['i < 5','Умова: цикл працює, поки вона істинна. Змінив межу — змінилась кількість повторень.'],['i++','Крок: як змінюється лічильник після кожного повторення. i-- — у зворотний бік, i += 2 — через одне.'],['console.log(i);','Тіло циклу: те, що виконується на кожному повторенні. Одне повторення — це ітерація.']];
+ const box=$('div','chips'),info=$('div','info','👆 Натисни на частину коду.'),cnt=$('div','','Відкрито: 0 з 4');const seen=new Set();
+ ch.forEach((c,i)=>{const b=$('button','chip',c[0]);b.onclick=()=>{box.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));b.classList.add('on');info.textContent=c[1];seen.add(i);cnt.textContent='Відкрито: '+seen.size+' з 4'+(seen.size===4?' ✅':'')};box.append(b)});
+ m.append(box,info,cnt);
+ const o=$('div','card');o.append($('b','','Порядок виконання:'),$('p','','початок → умова → тіло → крок → умова → тіло → крок … → умова хибна → кінець.'));m.append(o);
+ qr(m,'Що станеться, якщо змінити i < 5 на i <= 5?','Додасться ще одне повторення: виведеться 0, 1, 2, 3, 4, 5.');
+}
+function qr(m,q,a){const d=$('div','q');d.append($('b','',q));const t=$('textarea');t.rows=2;t.placeholder='Твоя відповідь…';const b=$('button','b g','Показати відповідь'),an=$('div','info hide','✅ '+a);b.onclick=()=>{an.classList.remove('hide');b.hidden=true};const r=$('div','row');r.append(b);d.append(t,r,an);m.append(d)}
+
+function s2(m){
+ m.append($('span','tag','Етап 2'),$('h2','','Ти — комп’ютер'));
+ m.append($('p','','Виконуй код так, як це робить комп’ютер: крок за кроком. Коли дійдеш до тіла циклу — передбач значення sum.'));
+ const L=['let sum = 0;','for (let i = 1; i <= 4; i++) {','  sum += i;','}','console.log(sum);'];
+ const S=[{t:'Створюємо змінну sum зі значенням 0.',l:0,i:'—',s:0}];
+ let sum=0;S.push({t:'Початок циклу: i = 1.',l:1,i:1,s:0});
+ for(let k=1;k<=4;k++){S.push({t:'Перевіряємо умову: '+k+' <= 4 → так.',l:1,i:k,s:sum});sum+=k;S.push({t:'Тіло циклу: sum += '+k+'.',l:2,i:k,s:sum,ask:sum});S.push({t:'Крок: i++ → i = '+(k+1)+'.',l:1,i:k+1,s:sum})}
+ S.push({t:'Перевіряємо умову: 5 <= 4 → ні. Цикл завершено.',l:1,i:5,s:sum});S.push({t:'console.log(sum) виводить '+sum+'. 🎉',l:4,i:5,s:sum});
+ const p=$('pre');const ls=L.map(x=>{const e=$('span','l',x||' ');p.append(e);return e});
+ const st=$('div','st'),bi=$('b','','—'),bs=$('b','','0');const d1=$('div');d1.append('i',bi);const d2=$('div');d2.append('sum',bs);st.append(d1,d2);
+ const tx=$('div','info big'),ask=$('div','hide'),inp=$('input','t'),ck=$('button','b','Перевірити'),fb=$('div','fb');inp.inputMode='numeric';
+ const r=$('div','row');r.append(inp,ck);ask.append($('b','','Чому дорівнюватиме sum після цього кроку?'),r,fb);
+ const nx=$('button','b','Далі'),rs=$('button','b g','Спочатку');const br=$('div','row');br.append(nx,rs);
+ let k=0,ok=true;
+ function draw(){const s=S[k];ls.forEach((e,i)=>e.classList.toggle('hl',i===s.l));bi.textContent=s.i;bs.textContent=(s.ask!=null&&!ok)?'?':s.s;tx.textContent=s.t;
+  ask.classList.toggle('hide',ok||s.ask==null);nx.disabled=!ok||k===S.length-1;fb.textContent='';fb.className='fb'}
+ ck.onclick=()=>{if(dg(inp.value)===String(S[k].ask)){ok=true;fb.className='fb ok';draw();fb.textContent='✓ Правильно!'}else{fb.className='fb no';fb.textContent='Ще раз: було sum = '+(S[k].ask-S[k].i)+', додаємо '+S[k].i+'.'}};
+ nx.onclick=()=>{k++;ok=S[k].ask==null;inp.value='';draw()};
+ rs.onclick=()=>{k=0;ok=true;inp.value='';draw()};
+ m.append(p,st,tx,ask,br);draw();
+}
+
+const F=[['for (let i = 0; i < 3; i++) {\n  console.log(i);\n}','012','Виведеться 0, 1, 2. Умова < не включає 3, а початок з 0.'],
+['for (let i = 1; i <= 3; i++) {\n  console.log(i);\n}','123','Виведеться 1, 2, 3. Знак <= включає останнє число.'],
+['for (let i = 0; i < 10; i += 3) {\n  console.log(i);\n}','0369','Виведеться 0, 3, 6, 9. Крок 3, а 12 уже не проходить умову.'],
+['for (let i = 3; i > 0; i--) {\n  console.log(i);\n}','321','Виведеться 3, 2, 1. Зворотний напрямок, i--.'],
+['for (let i = 1; i <= 5; i++) {\n  if (i === 3) continue;\n  console.log(i);\n}','1245','Виведеться 1, 2, 4, 5. continue пропускає один прохід.'],
+['let sum = 0;\nfor (let i = 1; i <= 3; i++) {\n  sum += i;\n}\nconsole.log(sum);','6','Виведеться 6: 1 + 2 + 3. Це накопичувач.']];
+function s3(m){
+ m.append($('span','tag','Етап 3'),$('h2','','Передбач результат'));
+ m.append($('p','','Запиши, що виведе кожен код (через пробіл або кому). Помилка прогнозу запам’ятовується краще, ніж правильна відповідь!'));
+ F.forEach((f,n)=>{const c=$('div','card');c.append($('b','','Фрагмент '+'АБВГДЕ'[n]),pre(f[0]));
+  const inp=$('input','t');inp.placeholder='Що виведеться?';const b=$('button','b','Перевірити'),fb=$('div','fb');const r=$('div','row');r.append(inp,b);let got=false;
+  b.onclick=()=>{if(!inp.value.trim())return;const ok=dg(inp.value)===f[1];fb.className='fb '+(ok?'ok':'no');fb.textContent=(ok?'✓ Вірно! ':'✗ Не зовсім. ')+f[2];if(ok&&!got){got=true;sc.pred++}};
+  c.append(r,fb);m.append(c)})
+}
+
+const B=[['for (let i = 1; i < 5; i++) {\n  console.log(i);\n}','Потрібно вивести числа від 1 до 5, а виводиться від 1 до 4.',['Умова i < 5 не включає число 5','Початок має бути 0','Забули console.log'],'for (let i = 1; i <= 5; i++) {\n  console.log(i);\n}'],
+['for (let i = 1; i <= 5; ) {\n  console.log(i);\n}','Програма «зависла». (Не запускай такий код у браузері!)',['Немає кроку i++, цикл нескінченний','Умова має бути <','Змінна не оголошена'],'for (let i = 1; i <= 5; i++) {\n  console.log(i);\n}'],
+['for (let i = 1; i <= 5; i++) {\n  let sum = 0;\n  sum += i;\n}\nconsole.log(sum);','Потрібна сума від 1 до 5, але виникає помилка sum is not defined.',['sum оголошено всередині циклу','Треба використати const','Крок i++ зайвий'],'let sum = 0;\nfor (let i = 1; i <= 5; i++) {\n  sum += i;\n}\nconsole.log(sum); // 15']];
+function s4(m){
+ m.append($('span','tag','Етап 4'),$('h2','','Полювання на баги'));
+ m.append($('p','','У кожному коді є помилка. Знайди її та обери правильне пояснення.'));
+ B.forEach((b,n)=>{const c=$('div','card');c.append($('b','','Баг '+(n+1)),$('p','',b[1]),pre(b[0]));
+  const fix=$('div','hide');fix.append($('b','','Виправлено:'),pre(b[3]));let done=false;
+  const idx=[0,1,2].sort(()=>Math.random()-.5);const fb=$('div','fb');
+  idx.forEach(i=>{const o=$('button','opt',b[2][i]);o.onclick=()=>{if(done)return;if(i===0){done=true;o.classList.add('ok');fb.className='fb ok';fb.textContent='✓ Так!';fix.classList.remove('hide');sc.bug++}else{o.classList.add('no');fb.className='fb no';fb.textContent='Ні, подумай ще.'}};c.append(o)});
+  c.append(fb,fix);m.append(c)})
+}
+
+function s5(m){
+ m.append($('span','tag','Етап 5'),$('h2','','Навіщо існує цикл?'));
+ m.append($('p','','Порівняй два способи вивести 20 чисел.'));
+ const g=$('div','cmp'),a=$('div');a.append($('b','','Без циклу'),pre('console.log(1);\nconsole.log(2);\nconsole.log(3);\n// … і так 20 разів'));
+ const b=$('div');b.append($('b','','З циклом'),pre('for (let i = 1; i <= 20; i++) {\n  console.log(i);\n}'));g.append(a,b);m.append(g);
+ const c=$('div','card');c.append($('b','','А якщо треба більше? Обери кількість:'));const out=$('div','info big','👆 Обери число.');
+ const rw=$('div','chips');[[20,'20'],[1000,'1 000'],[1000000,'1 000 000']].forEach(x=>{const k=$('button','chip',x[1]);k.onclick=()=>{rw.querySelectorAll('.chip').forEach(y=>y.classList.remove('on'));k.classList.add('on');out.textContent='Без циклу: '+x[1]+' рядків коду. З циклом: 3 рядки — змінюється лише число в умові.'};rw.append(k)});
+ c.append(rw,out);m.append(c);
+ qr(m,'Для яких завдань тобі знадобився цикл у практиці?','Сума та середнє, таблиця множення, FizzBuzz, перебір літер у слові, візерунки із зірочок — скрізь, де є повторення.');
+}
+function s6(m){
+ m.append($('span','tag','Етап 6'),$('h2','','Міст до наступної теми'));
+ m.append($('div','info big','🤔 Як би ти вивів 100 карток на сторінці сайту?'));
+ m.append($('p','','Писати 100 разів один і той самий код HTML — довго. Спробуй придумати, як тут допоможе цикл.'));
+ const t=$('textarea');t.rows=3;t.placeholder='Твоя ідея…';m.append(t);
+ m.append($('p','','Скоро ми дізнаємося, як JavaScript працює зі сторінкою (DOM), і створюватимемо елементи в циклі. Сьогодні відповідь не потрібна — це інтрига 😉'));
+}
+const E=[['Які три частини є в заголовку циклу for?','Початок (ініціалізація), умова, крок.'],['Що керує кількістю повторень?','Умова і крок: цикл повторюється, поки умова істинна.'],['Що змінити в for (let i = 1; i <= 10; i++), щоб числа виводились від 10 до 1?','for (let i = 10; i >= 1; i--) — змінюються початок, умова й крок.'],['Чому змінну sum оголошують до циклу, а не всередині?','Всередині вона обнулялась би на кожному повторенні й не була б доступна після циклу.']];
+function s7(m){
+ m.append($('span','tag','Етап 7'),$('h2','','Квиток на вихід'));
+ m.append($('p','','Дай письмові відповіді, а потім перевір себе.'));
+ E.forEach((e,n)=>{const c=$('div','card');c.append($('b','',(n+1)+'. '+e[0]));const t=$('textarea');t.rows=2;t.placeholder='Твоя відповідь…';const b=$('button','b g','Показати відповідь'),a=$('div','info hide','✅ '+e[1]);b.onclick=()=>{a.classList.remove('hide');b.hidden=true};const r=$('div','row');r.append(b);c.append(t,r,a);m.append(c)});
+ const f=$('div','card');f.append($('h2','','🏁 Твій результат'),$('p','','Передбачення: '+sc.pred+' з 6'),$('p','','Знайдено помилок: '+sc.bug+' з 3'),$('p','','Молодець! Ти розумієш, як працює цикл for.'));m.append(f);
+}
+const R=[s1,s2,s3,s4,s5,s6,s7];
+function draw(){
+ const sn=document.getElementById('steps');sn.innerHTML='';
+ T.forEach((t,i)=>{const b=$('button',(i===cur?'on ':'')+(sc.done[i]?'dn':''),String(i+1));b.title=t;b.setAttribute('aria-label',t);b.onclick=()=>{go(i)};sn.append(b)});
+ const m=document.getElementById('main');m.innerHTML='';R[cur](m);
+ document.getElementById('prev').disabled=cur===0;document.getElementById('next').disabled=cur===N-1;
+}
+function go(i){sc.done[cur]=1;cur=i;draw();scrollTo(0,0)}
+document.getElementById('prev').onclick=()=>go(cur-1);
+document.getElementById('next').onclick=()=>go(cur+1);
+draw();
 </script>
 </body>
 </html>
